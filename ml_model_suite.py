@@ -312,6 +312,9 @@ run_MLP(data)
 
 print()
 
+
+# ***Important Note*** the saved model data will overwrite everytime you run the same model functions
+
 # Prediction based on average temperature, average humidity, and number of days
 print("#"*90)
 print("#"*90)
