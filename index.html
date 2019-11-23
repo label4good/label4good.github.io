@@ -6,6 +6,32 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDYuIqP618BQ9QOscGkcLAY-OtLH2jBytk",
+    authDomain: "tomato-container-test.firebaseapp.com",
+    databaseURL: "https://tomato-container-test.firebaseio.com",
+    projectId: "tomato-container-test",
+    storageBucket: "tomato-container-test.appspot.com",
+    messagingSenderId: "1040932012099",
+    appId: "1:1040932012099:web:7bbc919d3f7cc1f33914f6",
+    measurementId: "G-V1DJRP0JXB"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+
+  var db = firebase.database();
+</script>
+
 <style>
 body,h1 {font-family: "Raleway", Arial, sans-serif}
 h1 {letter-spacing: 6px}
@@ -65,17 +91,53 @@ button, a {
 <script>
     function start() {
       document.getElementById("output").innerHTML = "Collected Data";
+      db.ref('test').set({
+           "FU": "Willie"
+        });
+        getLatestTimestamp(true, true);
       setTimeout(() => location.reload(), 2000);
     }
 
     function rotten() {
       document.getElementById("output").innerHTML = "Marked as Rotten :(";
+      getLatestTimestamp(true, false);
       setTimeout(() => location.reload(), 2000);
     }
 
     function dried() {
       document.getElementById("output").innerHTML = "Marked as Dried :)";
+      getLatestTimestamp(false, false);
       setTimeout(() => location.reload(), 2000);
+    }
+
+    var getLatestTimestamp = (state, batch) => {
+        db.ref('/data/0').once('value', snapshot => {
+            let obj = snapshot.val();
+            let arr_val = Object.keys(obj).map(Number);
+            console.log(arr_val);
+            arr_val =  arr_val.filter(el => !isNaN(el));
+            console.log(arr_val);
+                  
+            let ts = Math.max(...arr_val);
+
+            getTomInfo(state, batch, ts);
+        })
+    }
+
+    var getTomInfo = (state, batch, ts) => {
+        db.ref(`/data/0/${ts}`).once('value', snapshot => {
+            vals = snapshot.val();
+            uploadFBData(state, batch, ts, vals);
+        });
+    }
+
+    var uploadFBData = (state, batch, ts, obj) => {
+        if(!batch){
+            obj['state'] = state ? "rotten" : "dried";
+        } else 
+            obj['batch'] = batch;
+        console.log(obj);
+        db.ref(`/data/0/${ts}`).set(obj);
     }
 </script>
   
