@@ -90,12 +90,9 @@ button, a {
 
 <script>
     function start() {
-      document.getElementById("output").innerHTML = "Collected Data";
-      db.ref('test').set({
-           "FU": "Willie"
-        });
+        document.getElementById("output").innerHTML = "Collected Data";
         getLatestTimestamp(true, true);
-      setTimeout(() => location.reload(), 2000);
+        setTimeout(() => location.reload(), 2000);
     }
 
     function rotten() {
