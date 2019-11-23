@@ -43,22 +43,41 @@ button, a {
   
   <div class="w3-padding-16">
     <div class="w3-bar w3-border">
-      <a href="#" class="w3-bar-item button1">Start New Batch</a>
+      <button class="w3-bar-item button1" onclick="start()">Start New Batch</button>
     </div>
   </div>
 
   <div class="w3-padding-16">
     <div class="w3-bar w3-border">
-        <a href="#" class="w3-bar-item button2">Rotten</a>
+        <button href="#" class="w3-bar-item button3" onclick="rotten()">Rotten</button>
     </div>
   </div>
 
   <div class="w3-padding-16">
     <div class="w3-bar w3-border">
-        <a href="#" class="w3-bar-item button3">Dried</a>
+        <button href="#" class="w3-bar-item button2" onclick="dried()">Dried</button>
     </div>
   </div>
+
+  <p class="w3-bar-item button3" id="output"></p>
 </header>
+
+<script>
+    function start() {
+      document.getElementById("output").innerHTML = "Collected Data";
+      setTimeout(() => location.reload(), 2000);
+    }
+
+    function rotten() {
+      document.getElementById("output").innerHTML = "Marked as Rotten :(";
+      setTimeout(() => location.reload(), 2000);
+    }
+
+    function dried() {
+      document.getElementById("output").innerHTML = "Marked as Dried :)";
+      setTimeout(() => location.reload(), 2000);
+    }
+</script>
   
 <!-- End Page Content -->
 </div>
